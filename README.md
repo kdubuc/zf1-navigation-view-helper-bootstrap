@@ -20,6 +20,8 @@ This will replace Zend's Menu view helper with this customized one.
 2. **$view** is an instance of your view, and how you obtain it will depend on where you integrate this code. Consult the ZF documentation if you're not sure about how to get an instance of your view.
 
 To activate a dropdown, just set the href of the dropdown trigger to **#dropdownName**. The new helper will automatically find any hrefs beginning with **#** set the **dropdownName** ID on the corresponding **UL** tag.
+To activate a divider, just set the href to "divider".
+To activate a navheader, just set the href to "navheader" ans set the text with the label attribute.
 
 ## Demo
 
