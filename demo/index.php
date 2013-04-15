@@ -13,30 +13,35 @@ $autoloader = Zend_Loader_Autoloader::getInstance();
 $autoloader->registerNamespace('ZFBootstrap\\');
 $autoloader->setFallbackAutoloader(true);
 
-$dropdownPages = array(array(new Zend_Navigation_Page_Uri(array('label' => 'Subpage 1-1',
-                                                                'uri'   => '/subpage1-1')),
-                             new Zend_Navigation_Page_Uri(array('label' => 'Subpage 1-2',
-                                                                'uri'   => '/subpage1-2'))),
-                       array(new Zend_Navigation_Page_Uri(array('label' => 'Subpage 2-1',
-                                                                'uri'   => '/subpage2-1'))));
+$dropdownPages = array(
+    array(
+        new Zend_Navigation_Page_Uri(array('uri'   => 'navheader', 'label' => 'Nav Header')),
+        new Zend_Navigation_Page_Uri(array('label' => 'Subpage 1-1','uri'   => '/subpage1-1')),
+        new Zend_Navigation_Page_Uri(array('uri'   => 'divider')),
+        new Zend_Navigation_Page_Uri(array('label' => 'Subpage 1-2','uri'   => '/subpage1-2'))
+    ),
+    array(
+        new Zend_Navigation_Page_Uri(array('label' => 'Subpage 2-1','uri'   => '/subpage2-1'))
+    )
+);
 
-$pages = array(new Zend_Navigation_Page_Uri(array('label' => 'Page 1',
-                                                  'uri'   => '/page1')),
-               new Zend_Navigation_Page_Uri(array('label' => 'Page 2',
-                                                  'uri'   => '/page2')),
-               new Zend_Navigation_Page_Uri(array('class' => 'dont-clobber-me',
-                                                  'label' => 'Dropdown Trigger 1',
-                                                  'pages' => $dropdownPages[0],
-                                                  'uri'   => '#dropdown1')),
-               new Zend_Navigation_Page_Uri(array('label' => 'Dropdown Trigger 2',
-                                                  'pages' => $dropdownPages[1],
-                                                  'uri'   => '#dropdown2')),
-               new Zend_Navigation_Page_Uri(array('label' => 'I am not a dropdown',
-                                                  'uri'   => '#i-am-not-a-dropdown')));
+$pages = array(
+    new Zend_Navigation_Page_Uri(array('uri'   => 'navheader', 'label' => 'Nav Header')),
+    new Zend_Navigation_Page_Uri(array('label' => 'Page 1','uri'   => '/page1')),
+    new Zend_Navigation_Page_Uri(array('uri'   => 'divider')),
+    new Zend_Navigation_Page_Uri(array('label' => 'Page 2','uri'   => '/page2')),
+    new Zend_Navigation_Page_Uri(array('class' => 'dont-clobber-me','label' => 'Dropdown Trigger 1','pages' => $dropdownPages[0],'uri'   => '#dropdown1')),
+    new Zend_Navigation_Page_Uri(array('label' => 'Dropdown Trigger 2', 'pages' => $dropdownPages[1],'uri'   => '#dropdown2')),
+    new Zend_Navigation_Page_Uri(array('label' => 'Dropdown Trigger 2','pages' => $dropdownPages[1],'uri'   => '#dropdown2'))
+);
 
-$demoMenu = new Zend_Navigation(array(new Zend_Navigation_Page_Uri(array('label' => 'Root',
-                                                                         'pages' => $pages,
-                                                                         'uri'   => '/'))));
+$demoMenu = new Zend_Navigation(
+    array(
+        new Zend_Navigation_Page_Uri(array('label' => 'Root','pages' => $pages,'uri'   => '/'))
+    )
+);
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -66,10 +71,22 @@ $view->registerHelper(new Menu(), 'menu');
                     <?php echo $view->navigation($demoMenu)
                                     ->menu()
                                     ->setMinDepth(1)
-                                    ->setUlClass('nav nav-pills'); ?>
+                                    ->setMaxDepth(-1)
+                                    ->setRenderParents(false)
+                                    ->setUlClass('nav'); ?>
                 </div>
             </div>
         </div>
+        
+        <?php
+        echo $view->navigation($demoMenu)
+            ->menu()
+            ->setMinDepth(1)
+            ->setMaxDepth(1)
+            ->setUlClass("nav nav-list")
+            ->setRenderParents(false);
+        ?>
+        
         <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/jquery.js"></script>
         <script type="text/javascript" src="http://twitter.github.com/bootstrap/assets/js/bootstrap-dropdown.js"></script>
     </body>

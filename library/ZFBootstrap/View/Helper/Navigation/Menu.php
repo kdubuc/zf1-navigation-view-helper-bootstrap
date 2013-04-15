@@ -45,7 +45,28 @@ class Menu extends Zend_View_Helper_Navigation_Menu
         $domDoc->loadXML('<?xml version="1.0" encoding="utf-8"?>' . $html);
 
         $xpath = new DOMXPath($domDoc);
+        
+        // dividers
+        foreach ($xpath->query('//a[starts-with(@href, "divider")]') as $item)
+        {
+            $li = $item->parentNode;
+            $ul = $li->parentNode;
+            
+            $li->setAttribute('class', $ul->getAttribute("class") == 'nav' ? "divider-vertical" : "divider");
+            $li->removeChild($item);
+        }
+        
+         // nav headers
+        foreach ($xpath->query('//a[starts-with(@href, "navheader")]') as $item)
+        {
+            $li = $item->parentNode;
+            
+            $li->setAttribute('class', 'nav-header');
+            $li->appendChild($domDoc->createTextNode($item->nodeValue));
+            $li->removeChild($item);
+        }
 
+        // dropdowns
         foreach ($xpath->query('//a[starts-with(@href, "#")]') as $item)
         {
             $result = $xpath->query('../ul', $item);
